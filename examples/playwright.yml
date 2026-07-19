@@ -27,7 +27,7 @@ jobs:
         if: always()
         uses: mtzack-org/upload-ui-evidence@v1
         with:
-          portal-url: ${{ secrets.UI_EVIDENCE_PORTAL_URL }}
+          portal-url: ${{ vars.UI_EVIDENCE_PORTAL_URL }}
           token: ${{ secrets.UI_EVIDENCE_INGEST_TOKEN }}
           platform: web
           status: ${{ job.status }}

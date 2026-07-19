@@ -22,10 +22,10 @@ GitHub ActionsのJob Summaryから該当runを直接開けます。
 Vercel Private Blobストアを接続し、
 [Portalリポジトリ](https://github.com/mtzack-org/ui-evidence-portal)の手順に沿って環境変数を設定します。
 
-### 2. GitHub Secretsを2つ追加
+### 2. GitHub VariableとSecretを1つずつ追加
 
-- `UI_EVIDENCE_PORTAL_URL`: デプロイしたPortalのオリジン
-- `UI_EVIDENCE_INGEST_TOKEN`: Portal側の`EVIDENCE_INGEST_TOKEN`と同じ値
+- Repository Variable `UI_EVIDENCE_PORTAL_URL`: デプロイしたPortalのオリジン
+- Repository Secret `UI_EVIDENCE_INGEST_TOKEN`: Portal側の`EVIDENCE_INGEST_TOKEN`と同じ値
 
 ### 3. Playwright実行後に証跡をアップロード
 
@@ -34,7 +34,7 @@ Vercel Private Blobストアを接続し、
   if: always()
   uses: mtzack-org/upload-ui-evidence@v1
   with:
-    portal-url: ${{ secrets.UI_EVIDENCE_PORTAL_URL }}
+    portal-url: ${{ vars.UI_EVIDENCE_PORTAL_URL }}
     token: ${{ secrets.UI_EVIDENCE_INGEST_TOKEN }}
     platform: web
     status: ${{ job.status }}

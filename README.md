@@ -22,10 +22,10 @@ the GitHub Actions Job Summary.
 Connect a Vercel Private Blob store and complete the environment-variable setup in the
 [Portal repository](https://github.com/mtzack-org/ui-evidence-portal).
 
-### 2. Add two GitHub secrets
+### 2. Add one GitHub variable and one secret
 
-- `UI_EVIDENCE_PORTAL_URL`: your deployed Portal origin
-- `UI_EVIDENCE_INGEST_TOKEN`: the same value as the Portal's `EVIDENCE_INGEST_TOKEN`
+- Repository variable `UI_EVIDENCE_PORTAL_URL`: your deployed Portal origin
+- Repository secret `UI_EVIDENCE_INGEST_TOKEN`: the same value as the Portal's `EVIDENCE_INGEST_TOKEN`
 
 ### 3. Upload evidence after Playwright runs
 
@@ -34,7 +34,7 @@ Connect a Vercel Private Blob store and complete the environment-variable setup 
   if: always()
   uses: mtzack-org/upload-ui-evidence@v1
   with:
-    portal-url: ${{ secrets.UI_EVIDENCE_PORTAL_URL }}
+    portal-url: ${{ vars.UI_EVIDENCE_PORTAL_URL }}
     token: ${{ secrets.UI_EVIDENCE_INGEST_TOKEN }}
     platform: web
     status: ${{ job.status }}

@@ -1,5 +1,7 @@
 # Upload UI Evidence
 
+[日本語](README.ja.md)
+
 Upload screenshots, videos, HTML reports, traces, and logs from GitHub Actions to a private
 [UI Evidence Portal](https://github.com/mtzack-org/ui-evidence-portal). Every upload adds a direct
 Portal link to the GitHub Actions Job Summary.

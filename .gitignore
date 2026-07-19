@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+npm-debug.log*
+
+# The bundled Action is required at runtime and must stay committed.
+!dist/
+!dist/**

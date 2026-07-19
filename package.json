@@ -1,0 +1,23 @@
+{
+  "name": "upload-ui-evidence",
+  "version": "1.0.0",
+  "description": "Upload UI test screenshots, videos, reports, traces, and logs to a UI Evidence Portal.",
+  "license": "AGPL-3.0-only",
+  "private": true,
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "build": "ncc build src/index.mjs --out dist --minify",
+    "check-dist": "npm run build && git diff --exit-code -- dist"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/glob": "^0.7.0",
+    "@vercel/blob": "^2.0.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.44.1"
+  }
+}

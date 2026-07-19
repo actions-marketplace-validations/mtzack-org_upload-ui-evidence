@@ -1,12 +1,33 @@
 # Upload UI Evidence
 
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Upload%20UI%20Evidence-2f81f7?logo=github)](https://github.com/marketplace/actions/upload-ui-evidence)
+[![Release](https://img.shields.io/github/v/release/mtzack-org/upload-ui-evidence)](https://github.com/mtzack-org/upload-ui-evidence/releases)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+
 [日本語](README.ja.md)
 
-Upload screenshots, videos, HTML reports, traces, and logs from GitHub Actions to a private
-[UI Evidence Portal](https://github.com/mtzack-org/ui-evidence-portal). Every upload adds a direct
-Portal link to the GitHub Actions Job Summary.
+Stop digging through CI artifacts after a UI test fails. Upload Playwright screenshots, videos,
+HTML reports, traces, and logs to your private
+[UI Evidence Portal](https://github.com/mtzack-org/ui-evidence-portal), then open the exact run from
+the GitHub Actions Job Summary.
 
-## Usage
+![UI Evidence Portal test run dashboard](docs/assets/portal-overview.png)
+
+## Playwright quick start
+
+### 1. Deploy your private Portal
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmtzack-org%2Fui-evidence-portal)
+
+Connect a Vercel Private Blob store and complete the environment-variable setup in the
+[Portal repository](https://github.com/mtzack-org/ui-evidence-portal).
+
+### 2. Add two GitHub secrets
+
+- `UI_EVIDENCE_PORTAL_URL`: your deployed Portal origin
+- `UI_EVIDENCE_INGEST_TOKEN`: the same value as the Portal's `EVIDENCE_INGEST_TOKEN`
+
+### 3. Upload evidence after Playwright runs
 
 ```yaml
 - name: Upload UI evidence
@@ -25,9 +46,18 @@ Portal link to the GitHub Actions Job Summary.
     if-no-files-found: error
 ```
 
-Set `UI_EVIDENCE_PORTAL_URL` to the deployed Portal origin. Set
-`UI_EVIDENCE_INGEST_TOKEN` to the same secret as the Portal's `EVIDENCE_INGEST_TOKEN`.
-Store both as GitHub repository or organization secrets.
+See the [complete Playwright workflow](examples/playwright.yml) or the
+[public runnable demo](https://github.com/mtzack-org/upload-ui-evidence-playwright-demo).
+
+## What gets uploaded
+
+| Input | Typical Playwright output |
+| --- | --- |
+| `screenshots` | Failure and assertion screenshots |
+| `videos` | `.webm` test recordings |
+| `reports` | HTML reports or report archives |
+| `traces` | Playwright trace `.zip` files |
+| `logs` | Text, JSON, and application logs |
 
 Artifact inputs accept newline-separated glob patterns:
 
@@ -46,13 +76,6 @@ default), fails (`error`), or remains silent (`ignore`). No empty Portal run is 
 
 For a Vercel Preview protected by Deployment Protection, pass an Automation Bypass secret through
 `vercel-protection-bypass`. Do not set it for an unprotected production Portal.
-
-## Deploy your Portal
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmtzack-org%2Fui-evidence-portal)
-
-Connect a Vercel Private Blob store and configure the Portal environment variables after deployment.
-The Portal repository contains the complete setup instructions.
 
 ## Development
 

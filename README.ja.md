@@ -1,12 +1,33 @@
 # Upload UI Evidence
 
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Upload%20UI%20Evidence-2f81f7?logo=github)](https://github.com/marketplace/actions/upload-ui-evidence)
+[![Release](https://img.shields.io/github/v/release/mtzack-org/upload-ui-evidence)](https://github.com/mtzack-org/upload-ui-evidence/releases)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
+
 [English](README.md)
 
-GitHub Actionsで生成されたスクリーンショット、動画、HTMLレポート、トレース、ログを、非公開の
-[UI Evidence Portal](https://github.com/mtzack-org/ui-evidence-portal)へアップロードします。
-アップロードするたびに、GitHub ActionsのJob SummaryへPortalへの直接リンクが追加されます。
+UIテストが落ちるたびにCIのArtifactsを掘る作業をなくします。Playwrightのスクリーンショット、動画、
+HTMLレポート、Trace、ログを非公開の
+[UI Evidence Portal](https://github.com/mtzack-org/ui-evidence-portal)へアップロードし、
+GitHub ActionsのJob Summaryから該当runを直接開けます。
 
-## 使い方
+![UI Evidence Portalのテスト実行ダッシュボード](docs/assets/portal-overview.png)
+
+## Playwrightを60秒で導入
+
+### 1. 非公開Portalをデプロイ
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmtzack-org%2Fui-evidence-portal)
+
+Vercel Private Blobストアを接続し、
+[Portalリポジトリ](https://github.com/mtzack-org/ui-evidence-portal)の手順に沿って環境変数を設定します。
+
+### 2. GitHub Secretsを2つ追加
+
+- `UI_EVIDENCE_PORTAL_URL`: デプロイしたPortalのオリジン
+- `UI_EVIDENCE_INGEST_TOKEN`: Portal側の`EVIDENCE_INGEST_TOKEN`と同じ値
+
+### 3. Playwright実行後に証跡をアップロード
 
 ```yaml
 - name: Upload UI evidence
@@ -25,9 +46,18 @@ GitHub Actionsで生成されたスクリーンショット、動画、HTMLレ�
     if-no-files-found: error
 ```
 
-`UI_EVIDENCE_PORTAL_URL`には、デプロイしたPortalのオリジンを設定します。
-`UI_EVIDENCE_INGEST_TOKEN`には、Portal側の`EVIDENCE_INGEST_TOKEN`と同じシークレットを設定します。
-どちらもGitHubのリポジトリシークレットまたはOrganizationシークレットとして保存してください。
+[完全なPlaywright workflow](examples/playwright.yml)と
+[実行可能な公開デモ](https://github.com/mtzack-org/upload-ui-evidence-playwright-demo)も参照できます。
+
+## アップロードできるもの
+
+| Input | Playwrightでの主な用途 |
+| --- | --- |
+| `screenshots` | 失敗時やAssertion時のスクリーンショット |
+| `videos` | `.webm`形式のテスト録画 |
+| `reports` | HTMLレポートまたはそのアーカイブ |
+| `traces` | Playwright Traceの`.zip`ファイル |
+| `logs` | テキスト、JSON、アプリケーションログ |
 
 成果物の入力には、改行区切りのglobパターンを指定できます。
 
@@ -46,13 +76,6 @@ screenshots: |
 
 Deployment Protectionで保護されたVercel Previewへ送信する場合は、Automation Bypassのシークレットを
 `vercel-protection-bypass`へ渡してください。保護されていないProduction Portalでは設定しないでください。
-
-## Portalをデプロイ
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmtzack-org%2Fui-evidence-portal)
-
-デプロイ後にVercel Private Blobストアを接続し、Portalの環境変数を設定してください。
-詳しいセットアップ手順はPortalリポジトリにあります。
 
 ## 開発
 
